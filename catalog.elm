@@ -3,9 +3,10 @@ import Html exposing (Html, div, input, text)
 import Html.Attributes exposing (type', value)
 import Html.Events exposing (onClick)
 import String
+import Dict
+import Json.Decode as Json exposing (..)
 import Http
 import Task
-import Json.Decode as Json exposing (..)
 
 main =
   App.program
@@ -15,15 +16,24 @@ main =
     , subscriptions = subscriptions
     }
 
+type alias CatalogItem =
+  { name : String
+  , description : String
+  , tags : List String
+  , url : Maybe String
+  , coverImage : Maybe (Dict.Dict String String)
+  }
+
 type alias CatalogSection =
   { name : String
-  , tags : List String
+  , items : List CatalogItem
+  , coverImage : Maybe (Dict.Dict String String)
   }
 
 type alias CatalogData =
   { name : String
-  -- , sections : List CatalogSection
   , thumbnailSizes : List String
+  , sections : List CatalogSection
   }
 
 type alias Model =
@@ -38,11 +48,19 @@ init =
 type Msg
   = GetCatalog
   | CatalogFetchError Http.Error
-  | CatalogFetchSucceeded (String, List String)
+  | CatalogFetchSucceeded CatalogData
 
-decodeCatalog : Json.Decoder (String, List String)
+decodeItem : Json.Decoder CatalogItem
+decodeItem =
+  Json.object5 CatalogItem ("name" := string) ("description" := string) ("tags" := list string) (maybe ("url" := string)) (maybe ("coverImage" := (dict string)))
+
+decodeSection : Json.Decoder CatalogSection
+decodeSection =
+  Json.object3 CatalogSection ("name" := string) ("items" := list decodeItem) (maybe ("coverImage" := (dict string)))
+
+decodeCatalog : Json.Decoder CatalogData
 decodeCatalog =
-  Json.object2 (,) ("name" := string) ("thumbnailSizes" := list string)
+  Json.object3 CatalogData ("name" := string) ("thumbnailSizes" := list string) ("sections" := list decodeSection)
 
 getCatalog : String -> Cmd Msg
 getCatalog catalogUrl =
@@ -55,34 +73,52 @@ update msg model =
       (model, getCatalog model.catalogUrl)
 
     CatalogFetchError error ->
-      (model, Cmd.none)
+      (Debug.log "error!" model, Cmd.none)
 
-    CatalogFetchSucceeded (catalogName, catalogThumbnailSizes) ->
-      ({ model | catalogData = Just (CatalogData catalogName catalogThumbnailSizes) }, Cmd.none)
+    CatalogFetchSucceeded catalogData ->
+      ({ model | catalogData = Just catalogData }, Cmd.none)
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
-catalogView : Model -> Html Msg
-catalogView model =
+sectionView section =
   div []
-    [ text (case model.catalogData of
-              Just data ->
-                data.name
-              Nothing ->
-                "nada")
-    , text " Thumbnail sizes: "
-    , text (case model.catalogData of
-              Just data ->
-                String.join ", " data.thumbnailSizes
-              Nothing ->
-                "[]")
+    [ text ("Section: " ++ section.name)
+    , text (" Cover image: "
+              ++ case section.coverImage of
+                   Just imageData ->
+                     (toString (Dict.size imageData))
+                     ++ " sizes; original: "
+                     ++ case (Dict.get "original" imageData) of
+                          Just data ->
+                            data
+                          Nothing ->
+                            "no original?"
+                   Nothing ->
+                     "no cover image")
+    ]
+
+catalogView : CatalogData -> Html Msg
+catalogView catalog =
+  div []
+    [ div []
+        [ text " Thumbnail sizes: "
+        , text (String.join ", " catalog.thumbnailSizes)
+        ]
+    , div []
+        [ text " Sections: "
+        , div []
+          (List.map (\section -> sectionView section) catalog.sections)
+        ]
     ]
 
 view : Model -> Html Msg
 view model =
   div []
-    [ catalogView model
-    , input [ type' "button", Html.Attributes.value "Get catalog", onClick GetCatalog ] []
+    [ case model.catalogData of
+        Just data ->
+          catalogView data
+        Nothing ->
+          input [ type' "button", Html.Attributes.value "Get catalog", onClick GetCatalog ] []
     ]
