@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "dev": "webpack-dev-server --port 3000"
+  },
+  "devDependencies": {
+    "brunch": "^2.8.2",
+    "elm-brunch": "^0.5.0"
+  }
+}

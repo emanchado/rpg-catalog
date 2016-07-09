@@ -8,6 +8,7 @@ import Json.Decode as Json exposing (..)
 import Http
 import Task
 
+main : Program Never
 main =
   App.program
     { init = init
@@ -82,6 +83,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
+sectionView : CatalogSection -> Html Msg
 sectionView section =
   div []
     [ text ("Section: " ++ section.name)

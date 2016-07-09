@@ -1,2 +1,4 @@
 elm-stuff/packages/
 elm-stuff/build-artifacts/
+public/
+node_modules/
