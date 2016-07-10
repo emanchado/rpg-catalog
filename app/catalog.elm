@@ -1,8 +1,6 @@
 import Html.App as App
-import Html exposing (Html, div, input, text)
-import Html.Attributes exposing (type', value)
-import Html.Events exposing (onClick)
-import String
+import Html exposing (Html, div, span, input, text, img)
+import Html.Attributes exposing (src, class)
 import Dict
 import Json.Decode as Json exposing (..)
 import Http
@@ -17,18 +15,20 @@ main =
     , subscriptions = subscriptions
     }
 
+type alias CoverImage = Maybe (Dict.Dict String String)
+
 type alias CatalogItem =
   { name : String
   , description : String
   , tags : List String
   , url : Maybe String
-  , coverImage : Maybe (Dict.Dict String String)
+  , coverImage : CoverImage
   }
 
 type alias CatalogSection =
   { name : String
   , items : List CatalogItem
-  , coverImage : Maybe (Dict.Dict String String)
+  , coverImage : CoverImage
   }
 
 type alias CatalogData =
@@ -44,11 +44,13 @@ type alias Model =
 
 init : (Model, Cmd Msg)
 init =
-  (Model "http://demiurgo.org/tmp/catalog/catalog.json" Nothing, Cmd.none)
+  let
+    url = "catalog/catalog.json"
+  in
+    (Model url Nothing, getCatalog url)
 
 type Msg
-  = GetCatalog
-  | CatalogFetchError Http.Error
+  = CatalogFetchError Http.Error
   | CatalogFetchSucceeded CatalogData
 
 decodeItem : Json.Decoder CatalogItem
@@ -70,9 +72,6 @@ getCatalog catalogUrl =
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
-    GetCatalog ->
-      (model, getCatalog model.catalogUrl)
-
     CatalogFetchError error ->
       (Debug.log "error!" model, Cmd.none)
 
@@ -83,37 +82,46 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
-sectionView : CatalogSection -> Html Msg
-sectionView section =
-  div []
-    [ text ("Section: " ++ section.name)
-    , text (" Cover image: "
-              ++ case section.coverImage of
-                   Just imageData ->
-                     (toString (Dict.size imageData))
-                     ++ " sizes; original: "
-                     ++ case (Dict.get "original" imageData) of
-                          Just data ->
-                            data
-                          Nothing ->
-                            "no original?"
-                   Nothing ->
-                     "no cover image")
+coverImage : { a | coverImage : CoverImage } -> String -> String -> Html Msg
+coverImage element thumbnailSize defaultImage =
+  let imageUrl
+        = case element.coverImage of
+            Just imageData ->
+              case (Dict.get thumbnailSize imageData) of
+                Just data ->
+                  "/catalog/" ++ data
+                Nothing ->
+                  defaultImage
+            Nothing ->
+              defaultImage
+  in
+    img [ src imageUrl ] []
+
+highlightedItemView : CatalogItem -> Html Msg
+highlightedItemView item =
+  div [ class "highlighted-item" ]
+    [ coverImage item "64x64" "/images/default-item.png"
+    , span [ class "highlighted-item-text" ] [ text item.name ]
+    ]
+
+catalogSectionView : CatalogSection -> Html Msg
+catalogSectionView section =
+  div [ class "section-preview-container" ]
+    [ div [ class "section-name" ] [ text section.name ]
+    , div [ class "section-preview" ]
+        [ div [ class "section-badge" ]
+            [ coverImage section "128x128" "/images/default-section.png" ]
+        , div [ class "highlighted-items" ]
+                (List.map highlightedItemView section.items)
+        ]
     ]
 
 catalogView : CatalogData -> Html Msg
 catalogView catalog =
   div []
-    [ div []
-        [ text " Thumbnail sizes: "
-        , text (String.join ", " catalog.thumbnailSizes)
-        ]
-    , div []
-        [ text " Sections: "
-        , div []
-          (List.map (\section -> sectionView section) catalog.sections)
-        ]
-    ]
+    (List.map
+         (\section -> catalogSectionView section)
+         catalog.sections)
 
 view : Model -> Html Msg
 view model =
@@ -122,5 +130,5 @@ view model =
         Just data ->
           catalogView data
         Nothing ->
-          input [ type' "button", Html.Attributes.value "Get catalog", onClick GetCatalog ] []
+          div [] [ text "Loading…" ]
     ]
