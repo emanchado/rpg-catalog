@@ -1,17 +1,21 @@
-import Html.App as App
 import Html exposing (Html, div, span, input, text, img)
 import Html.Attributes exposing (src, class)
+import Html.Events exposing (onClick)
 import Dict
 import Json.Decode as Json exposing (..)
 import Http
 import Task
+import Navigation
+
+import Routing
 
 main : Program Never
 main =
-  App.program
+  Navigation.program Routing.parser
     { init = init
     , view = view
     , update = update
+    , urlUpdate = urlUpdate
     , subscriptions = subscriptions
     }
 
@@ -38,20 +42,31 @@ type alias CatalogData =
   }
 
 type alias Model =
-  { catalogUrl : String
+  { route : Routing.Route
+  , catalogUrl : String
   , catalogData : Maybe CatalogData
   }
 
-init : (Model, Cmd Msg)
-init =
+init : Result String Routing.Route -> (Model, Cmd Msg)
+init result =
   let
-    url = "catalog/catalog.json"
+    catalogJsonUrl = "catalog/catalog.json"
+    currentRoute = Routing.routeFromResult result
   in
-    (Model url Nothing, getCatalog url)
+    (Model currentRoute catalogJsonUrl Nothing, getCatalog catalogJsonUrl)
+
+urlUpdate : Result String Routing.Route -> Model -> (Model, Cmd Msg)
+urlUpdate result model =
+  let
+    currentRoute =
+      Routing.routeFromResult result
+  in
+    ({ model | route = currentRoute }, Cmd.none)
 
 type Msg
   = CatalogFetchError Http.Error
   | CatalogFetchSucceeded CatalogData
+  | ShowSection String
 
 decodeItem : Json.Decoder CatalogItem
 decodeItem =
@@ -77,6 +92,9 @@ update msg model =
 
     CatalogFetchSucceeded catalogData ->
       ({ model | catalogData = Just catalogData }, Cmd.none)
+
+    ShowSection sectionName ->
+      (model, Navigation.modifyUrl ("#section/" ++ sectionName))
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -107,7 +125,7 @@ highlightedItemView item =
 catalogSectionView : CatalogSection -> Html Msg
 catalogSectionView section =
   div [ class "section-preview-container" ]
-    [ div [ class "section-name" ] [ text section.name ]
+    [ div [ class "section-name", onClick (ShowSection section.name) ] [ text section.name ]
     , div [ class "section-preview" ]
         [ div [ class "section-badge" ]
             [ coverImage section "128x128" "/images/default-section.png" ]
@@ -123,12 +141,24 @@ catalogView catalog =
          (\section -> catalogSectionView section)
          catalog.sections)
 
+catalogIndexView : Model -> Html Msg
+catalogIndexView model =
+    case model.catalogData of
+      Just data ->
+        catalogView data
+      Nothing ->
+        div [] [ text "Loading…" ]
+
 view : Model -> Html Msg
 view model =
-  div []
-    [ case model.catalogData of
-        Just data ->
-          catalogView data
-        Nothing ->
-          div [] [ text "Loading…" ]
-    ]
+  case model.route of
+    Routing.CatalogIndex ->
+      catalogIndexView model
+    Routing.SectionIndex sectionName ->
+      div []
+        [ text ("Here I'll show section " ++ sectionName)
+        ]
+    Routing.NotFoundRoute ->
+      div []
+        [ text "404 Not Found"
+        ]
