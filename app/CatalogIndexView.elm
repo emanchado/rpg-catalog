@@ -1,4 +1,4 @@
-module CatalogIndexViews exposing (view)
+module CatalogIndexView exposing (view)
 
 import Dict
 import Html exposing (Html, div, span, input, text, img)

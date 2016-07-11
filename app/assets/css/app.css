@@ -77,3 +77,40 @@ header {
 
     margin-right: 5px;
 }
+
+.item-list {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+ul.item-list li {
+    border: 1px solid #ddd;
+    margin: 5px;
+}
+
+.item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 10px;
+}
+.item-container img {
+    margin-bottom: 10px;
+
+    cursor: pointer;
+}
+
+.tag-sidebar {
+    float: right;
+
+    width: 15%;
+
+    border-left: 1px solid #ddd;
+    padding-left: 20px;
+}
+
+.tag-sidebar .tag {
+    font-size: 12px;
+}

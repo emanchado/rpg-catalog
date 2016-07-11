@@ -7,7 +7,19 @@ import Html.Events exposing (onClick)
 import Routing
 import Models exposing (Model)
 import Actions exposing (Msg)
-import CatalogIndexViews
+import CatalogIndexView
+import SectionIndexView
+import ItemDetailView
+
+notFoundView : Model -> Html Msg
+notFoundView model =
+  div []
+    [ text "404 Not Found"
+    ]
+
+loadingView : Model -> Html Msg
+loadingView model =
+  div [] [ text "Loading…" ]
 
 mainApplicationView : Model -> Html Msg
 mainApplicationView model =
@@ -15,18 +27,12 @@ mainApplicationView model =
     Just data ->
       case model.route of
         Routing.CatalogIndex ->
-          CatalogIndexViews.view data
+          CatalogIndexView.view data
         Routing.SectionIndex sectionId ->
-          div []
-            [ text ("Here I'll show section " ++ (toString sectionId))
-            ]
+          SectionIndexView.view data sectionId
         Routing.ItemDetail itemId ->
-          div []
-            [ text ("Here I'll show item " ++ (toString itemId))
-            ]
+          ItemDetailView.view data itemId
         Routing.NotFoundRoute ->
-          div []
-            [ text "404 Not Found"
-            ]
+          notFoundView model
     Nothing ->
-      div [] [ text "Loading…" ]
+      loadingView model
