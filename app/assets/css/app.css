@@ -34,11 +34,15 @@ header {
 .section-badge img {
     max-width: 64px;
     max-height: 64px;
+
+    cursor: pointer;
 }
 
 .section-name {
     margin-top: 5px;
     margin-left: 15px;
+
+    cursor: pointer;
 }
 
 .highlighted-items {
@@ -56,6 +60,8 @@ header {
 
     margin-right: 15px;
     margin-bottom: 5px;
+
+    cursor: pointer;
 }
 
 .highlighted-item-text {

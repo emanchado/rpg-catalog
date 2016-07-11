@@ -6,14 +6,16 @@ import UrlParser exposing (..)
 
 type Route
   = CatalogIndex
-  | SectionIndex String
+  | SectionIndex Int
+  | ItemDetail Int
   | NotFoundRoute
 
 matchers : Parser (Route -> a) a
 matchers =
   oneOf
     [ format CatalogIndex (s "")
-    , format SectionIndex (s "section" </> string)
+    , format SectionIndex (s "section" </> int)
+    , format ItemDetail (s "item" </> int)
     ]
 
 hashParser : Navigation.Location -> Result String Route
