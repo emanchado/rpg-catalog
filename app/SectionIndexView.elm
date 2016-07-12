@@ -63,7 +63,7 @@ sectionView : InterfaceProperties -> CatalogSection -> Html Msg
 sectionView uiState section =
   div []
     [ h2 []
-        [ a [ href "/", onClick ShowCatalog ] [ text "Home" ]
+        [ a [ href "#/", onClick ShowCatalog ] [ text "Home" ]
         , text " ⇢ "
         , text section.name
         ]
