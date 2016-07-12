@@ -14,6 +14,7 @@ type Msg
   | ShowItem Int
   | HighlightTag String
   | UnhighlightTag
+  | ToggleTagFilter String
 
 urlUpdate : Result String Routing.Route -> Model -> (Model, Cmd Msg)
 urlUpdate result model =
@@ -52,5 +53,18 @@ update msg model =
       let
         oldUiState = model.uiState
         newUiState = { oldUiState | highlightedTag = Nothing }
+      in
+        ({ model | uiState = newUiState }, Cmd.none)
+
+    ToggleTagFilter tag ->
+      let
+        toggleTag tag list =
+          if List.member tag list then
+            List.filter (\t -> t /= tag) list
+          else
+            tag :: list
+
+        oldUiState = model.uiState
+        newUiState = { oldUiState | tagFilter = toggleTag tag oldUiState.tagFilter }
       in
         ({ model | uiState = newUiState }, Cmd.none)

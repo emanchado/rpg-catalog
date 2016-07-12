@@ -30,6 +30,7 @@ type alias CatalogData =
 
 type alias InterfaceProperties =
   { highlightedTag : Maybe String
+  , tagFilter : List String
   }
 
 type alias Model =

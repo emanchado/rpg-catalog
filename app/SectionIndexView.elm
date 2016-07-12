@@ -1,6 +1,6 @@
 module SectionIndexView exposing (view)
 
-import Dict
+import String
 import Html exposing (Html, h2, h3, div, span, aside, ul, li, a, input, text, img)
 import Html.Attributes exposing (src, href, class)
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
@@ -13,14 +13,21 @@ import ViewUtils
 itemView : InterfaceProperties -> CatalogItem -> Html Msg
 itemView uiState item =
   let
-    itemClass =
+    itemInFilter =
+      (List.isEmpty uiState.tagFilter) ||
+        List.all (\t -> List.member t item.tags) uiState.tagFilter
+
+    filterClass =
+      if itemInFilter then "" else "filtered-out"
+
+    highlightClass =
       case uiState.highlightedTag of
-        Just tag ->
-          if List.member tag item.tags then "highlighted" else ""
+        Just highlightedTag ->
+          if List.member highlightedTag item.tags then "highlighted" else ""
         Nothing ->
           ""
   in
-    li [ class itemClass ]
+    li [ class (String.join " " [filterClass, highlightClass]) ]
       [ div [ class "item-container", onClick (ShowItem item.id) ]
           [ ViewUtils.coverImage item "128x128" "/images/default-item.png"
           , text item.name
@@ -32,16 +39,16 @@ tagView : InterfaceProperties -> String -> Html Msg
 tagView uiState tag =
   let
     extraClass =
-      case uiState.highlightedTag of
-        Just hTag ->
-          if hTag == tag then " highlighted" else ""
-        Nothing ->
-          ""
+      if List.member tag uiState.tagFilter then
+        " highlighted"
+      else
+        ""
   in
   a [ class ("tag" ++ extraClass)
-    , href ("#/tags/" ++ tag)
+    -- , href ("#/section/" ++ "3" ++ "/tags/" ++ tag)
     , onMouseEnter (HighlightTag tag)
     , onMouseLeave UnhighlightTag
+    , onClick (ToggleTagFilter tag)
     ]
     [ text tag ]
 
