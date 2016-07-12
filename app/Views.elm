@@ -1,12 +1,12 @@
 module Views exposing (mainApplicationView)
 
-import Html exposing (Html, div, span, input, text, img)
-import Html.Attributes exposing (src, class)
+import Html exposing (Html, div, span, a, input, text, img)
+import Html.Attributes exposing (class, src, href)
 import Html.Events exposing (onClick)
 
 import Routing
 import Models exposing (Model)
-import Actions exposing (Msg)
+import Actions exposing (..)
 import CatalogIndexView
 import SectionIndexView
 import ItemDetailView
@@ -14,7 +14,8 @@ import ItemDetailView
 notFoundView : Model -> Html Msg
 notFoundView model =
   div []
-    [ text "404 Not Found"
+    [ div [] [ text "404 Not Found" ]
+    , a [ href "#/", onClick ShowCatalog ] [ text "Back to homepage" ]
     ]
 
 loadingView : Model -> Html Msg
@@ -29,7 +30,7 @@ mainApplicationView model =
         Routing.CatalogIndex ->
           CatalogIndexView.view data
         Routing.SectionIndex sectionId ->
-          SectionIndexView.view data sectionId
+          SectionIndexView.view data model.uiState sectionId
         Routing.ItemDetail itemId ->
           ItemDetailView.view data itemId
         Routing.NotFoundRoute ->

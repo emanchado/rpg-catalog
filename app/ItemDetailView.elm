@@ -1,6 +1,6 @@
 module ItemDetailView exposing (view)
 
-import Dict
+-- import Dict
 import Html exposing (Html, div, span, input, text, img)
 import Html.Attributes exposing (src, class)
 import Html.Events exposing (onClick)

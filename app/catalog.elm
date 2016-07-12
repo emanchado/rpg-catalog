@@ -25,7 +25,7 @@ init result =
     catalogJsonUrl = "catalog/catalog.json"
     currentRoute = Routing.routeFromResult result
   in
-    (Model currentRoute catalogJsonUrl Nothing, getCatalog catalogJsonUrl)
+    (Model currentRoute catalogJsonUrl Nothing (InterfaceProperties Nothing), getCatalog catalogJsonUrl)
 
 getCatalog : String -> Cmd Msg
 getCatalog catalogUrl =

@@ -28,8 +28,13 @@ type alias CatalogData =
   , sections : List CatalogSection
   }
 
+type alias InterfaceProperties =
+  { highlightedTag : Maybe String
+  }
+
 type alias Model =
   { route : Routing.Route
   , catalogUrl : String
   , catalogData : Maybe CatalogData
+  , uiState : InterfaceProperties
   }
