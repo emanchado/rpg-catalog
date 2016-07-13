@@ -86,6 +86,8 @@ nav {
     display: flex;
     list-style: none;
     flex-wrap: wrap;
+
+    padding: 0;
 }
 
 ul.item-list > li {
@@ -157,11 +159,15 @@ ul.item-list > li.filtered-out {
     padding-left: 20px;
 }
 
-.tag-sidebar h3 {
+.tag-sidebar h2 {
     margin-top: 0;
     margin-bottom: 10px;
 }
 
+.tag-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
 .tag-sidebar .tag {
     display: block;
 
@@ -171,4 +177,21 @@ ul.item-list > li.filtered-out {
 .tag-sidebar .tag.highlighted {
     color: white;
     background-color: #0000ee;
+}
+
+.item-card {
+    margin-top: 20px;
+}
+.item-main-image {
+    float: right;
+
+    margin: 0 20px;
+    border: 1px solid #ddd;
+}
+.item-main-image img {
+    width: 300px;
+    height: 300px;
+}
+.item-main-content {
+    min-height: 310px;
 }

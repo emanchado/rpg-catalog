@@ -37,3 +37,10 @@ getSectionItem catalog itemId =
              res)
     Nothing
     catalog.sections
+
+relatedItems : CatalogData -> CatalogItem -> List CatalogItem
+relatedItems catalog item =
+  let
+    allItems = List.concatMap (\s -> s.items) catalog.sections
+  in
+    allItems

@@ -1,14 +1,38 @@
 module SectionIndexView exposing (view)
 
-import String
 import Html exposing (Html, nav, h2, div, span, aside, ul, li, a, input, text, img)
 import Html.Attributes exposing (src, href, class)
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
+import String
 
 import Models exposing (..)
 import ModelUtils
 import Actions exposing (..)
 import ViewUtils
+
+tagView : InterfaceProperties -> String -> Html Msg
+tagView uiState tag =
+  let
+    extraClass =
+      if List.member tag uiState.tagFilter then
+        " highlighted"
+      else
+        ""
+  in
+    a [ class ("tag" ++ extraClass)
+      -- , href ("#/section/" ++ "3" ++ "/tags/" ++ tag)
+      , onMouseEnter (HighlightTag tag)
+      , onMouseLeave UnhighlightTag
+      , onClick (ToggleTagFilter tag)
+      ]
+      [ text tag ]
+
+tagListView : InterfaceProperties -> CatalogSection -> Html Msg
+tagListView uiState section =
+  aside [ class "tag-sidebar" ]
+    ((h2 [] [ text "Tags" ]) ::
+       (List.map (tagView uiState)
+          (ModelUtils.getSectionTags section)))
 
 itemView : InterfaceProperties -> CatalogItem -> Html Msg
 itemView uiState item =
@@ -27,37 +51,9 @@ itemView uiState item =
         Nothing ->
           ""
   in
-    li [ class (String.join " " [filterClass, highlightClass]) ]
-      [ div [ class "item-container", onClick (ShowItem item.id) ]
-          [ ViewUtils.coverImage item "128x128" "/images/default-item.png"
-          , text item.name
-          , div [ class "item-description" ] [ text item.description ]
-          ]
-      ]
-
-tagView : InterfaceProperties -> String -> Html Msg
-tagView uiState tag =
-  let
-    extraClass =
-      if List.member tag uiState.tagFilter then
-        " highlighted"
-      else
-        ""
-  in
-  a [ class ("tag" ++ extraClass)
-    -- , href ("#/section/" ++ "3" ++ "/tags/" ++ tag)
-    , onMouseEnter (HighlightTag tag)
-    , onMouseLeave UnhighlightTag
-    , onClick (ToggleTagFilter tag)
-    ]
-    [ text tag ]
-
-tagListView : InterfaceProperties -> CatalogSection -> Html Msg
-tagListView uiState section =
-  aside [ class "tag-sidebar" ]
-    ((h2 [] [ text "Tags" ]) ::
-       (List.map (tagView uiState)
-          (ModelUtils.getSectionTags section)))
+    ViewUtils.smallItemView
+      (String.join " " [filterClass, highlightClass])
+      item
 
 sectionView : InterfaceProperties -> CatalogSection -> Html Msg
 sectionView uiState section =
