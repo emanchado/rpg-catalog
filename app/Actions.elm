@@ -37,7 +37,8 @@ update msg model =
       (model, Navigation.modifyUrl "#/")
 
     ShowSection sectionName ->
-      (model, Navigation.modifyUrl ("#section/" ++ (toString sectionName)))
+      ({ model | uiState = InterfaceProperties Nothing []}
+       , Navigation.modifyUrl ("#section/" ++ (toString sectionName)))
 
     ShowItem itemName ->
       (model, Navigation.modifyUrl ("#item/" ++ (toString itemName)))
