@@ -41,6 +41,30 @@ getSectionItem catalog itemId =
 relatedItems : CatalogData -> CatalogItem -> List CatalogItem
 relatedItems catalog item =
   let
-    allItems = List.concatMap (\s -> s.items) catalog.sections
+    allItems =
+      List.filter
+        (\i -> i /= item)
+        (List.concatMap (\s -> s.items) catalog.sections)
+
+    referenceTagSet = Set.fromList item.tags
+
+    scoredItems =
+      List.map
+        (\i ->
+           let
+             numberCommonTags =
+               Set.size (Set.intersect
+                           referenceTagSet
+                           (Set.fromList i.tags))
+           in
+             (i, numberCommonTags))
+        allItems
+
+    relatedItems =
+      List.filter
+        (\i -> (snd i) > 0)
+        scoredItems
   in
-    allItems
+    List.map
+      fst
+      (List.sortBy (\i -> (snd i) * -1) relatedItems)
