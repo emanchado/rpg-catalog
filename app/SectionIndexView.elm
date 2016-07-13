@@ -1,7 +1,7 @@
 module SectionIndexView exposing (view)
 
 import String
-import Html exposing (Html, h2, h3, div, span, aside, ul, li, a, input, text, img)
+import Html exposing (Html, nav, h2, div, span, aside, ul, li, a, input, text, img)
 import Html.Attributes exposing (src, href, class)
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
 
@@ -55,21 +55,21 @@ tagView uiState tag =
 tagListView : InterfaceProperties -> CatalogSection -> Html Msg
 tagListView uiState section =
   aside [ class "tag-sidebar" ]
-    ((h3 [] [ text "Tags" ]) ::
-       (List.map (\t -> tagView uiState t)
+    ((h2 [] [ text "Tags" ]) ::
+       (List.map (tagView uiState)
           (ModelUtils.getSectionTags section)))
 
 sectionView : InterfaceProperties -> CatalogSection -> Html Msg
 sectionView uiState section =
   div []
-    [ h2 []
+    [ nav []
         [ a [ href "#/", onClick ShowCatalog ] [ text "Home" ]
         , text " ⇢ "
         , text section.name
         ]
     , tagListView uiState section
     , ul [ class "item-list" ]
-        (List.map (\i -> itemView uiState i) section.items)
+        (List.map (itemView uiState) section.items)
     ]
         
 view : CatalogData -> InterfaceProperties -> Int -> Html Msg

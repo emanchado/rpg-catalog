@@ -1,7 +1,7 @@
 module ItemDetailView exposing (view)
 
 -- import Dict
-import Html exposing (Html, h2, div, span, a, input, text, img)
+import Html exposing (Html, nav, div, span, a, input, text, img)
 import Html.Attributes exposing (class, src, href)
 import Html.Events exposing (onClick)
 
@@ -15,13 +15,15 @@ view catalog itemId =
   case ModelUtils.getSectionItem catalog itemId of
     Just (section, item) ->
       div []
-        [ h2 []
+        [ nav []
             [ a [ href "#/", onClick ShowCatalog ] [ text "Home" ]
             , text " ⇢ "
             , a [ href ("#section/" ++ (toString section.id))
                 , onClick (ShowSection section.id)
                 ]
                 [ text section.name ]
+            , text " ⇢ "
+            , text item.name
             ]
         , div [] [ text ("Show item: " ++ (toString itemId)) ]
         ]
