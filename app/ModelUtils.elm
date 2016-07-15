@@ -2,9 +2,9 @@ module ModelUtils exposing (..)
 
 import Set
 
-import Models exposing (..)
+import CatalogModels exposing (Catalog, CatalogSection, CatalogItem)
 
-getSection : CatalogData -> Int -> Maybe CatalogSection
+getSection : Catalog -> Int -> Maybe CatalogSection
 getSection catalog sectionId =
   let
     matchingSections = List.filter (\s -> s.id == sectionId) catalog.sections
@@ -23,7 +23,7 @@ getSectionTags section =
        Set.empty
        section.items)
 
-getSectionItem : CatalogData -> Int -> Maybe (CatalogSection, CatalogItem)
+getSectionItem : Catalog -> Int -> Maybe (CatalogSection, CatalogItem)
 getSectionItem catalog itemId =
   List.foldl
     (\s res ->
@@ -38,7 +38,7 @@ getSectionItem catalog itemId =
     Nothing
     catalog.sections
 
-relatedItems : CatalogData -> CatalogItem -> List CatalogItem
+relatedItems : Catalog -> CatalogItem -> List CatalogItem
 relatedItems catalog item =
   let
     allItems =

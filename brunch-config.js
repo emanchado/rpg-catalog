@@ -9,7 +9,7 @@ module.exports = {
 
     plugins: {
         elmBrunch: {
-            mainModules: ['app/catalog.elm'],
+            mainModules: ['app/Main.elm'],
             makeParameters: ['--warn']
         }
     }

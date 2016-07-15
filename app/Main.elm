@@ -8,6 +8,7 @@ import Models exposing (..)
 import Views
 -- import CatalogIndexViews as Views
 import CatalogParser exposing (parseCatalog)
+import SectionPage.Model
 
 main : Program Never
 main =
@@ -25,7 +26,7 @@ init result =
     catalogJsonUrl = "catalog/catalog.json"
     currentRoute = Routing.routeFromResult result
   in
-    (Model currentRoute catalogJsonUrl Nothing (InterfaceProperties Nothing []), getCatalog catalogJsonUrl)
+    (Model currentRoute catalogJsonUrl Nothing (SectionPage.Model.init Nothing), getCatalog catalogJsonUrl)
 
 getCatalog : String -> Cmd Msg
 getCatalog catalogUrl =

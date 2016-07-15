@@ -5,16 +5,18 @@ import Navigation
 
 import Routing
 import Models exposing (..)
+import CatalogModels exposing (Catalog)
+import SectionPage.Model
+import SectionPage.Update
+import SectionPage.Messages
 
 type Msg
   = CatalogFetchError Http.Error
-  | CatalogFetchSucceeded CatalogData
+  | CatalogFetchSucceeded Catalog
   | ShowCatalog
   | ShowSection Int
   | ShowItem Int
-  | HighlightTag String
-  | UnhighlightTag
-  | ToggleTagFilter String
+  | SectionPage SectionPage.Messages.Msg
 
 urlUpdate : Result String Routing.Route -> Model -> (Model, Cmd Msg)
 urlUpdate result model =
@@ -31,41 +33,19 @@ update msg model =
       (Debug.log "error!" model, Cmd.none)
 
     CatalogFetchSucceeded catalogData ->
-      ({ model | catalogData = Just catalogData }, Cmd.none)
+      ({ model | catalog = Just catalogData }, Cmd.none)
 
     ShowCatalog ->
       (model, Navigation.modifyUrl "#/")
 
-    ShowSection sectionName ->
-      ({ model | uiState = InterfaceProperties Nothing []}
-       , Navigation.modifyUrl ("#section/" ++ (toString sectionName)))
+    ShowSection sectionId ->
+      ({ model | sectionPage = SectionPage.Model.init model.catalog}
+       , Navigation.modifyUrl ("#section/" ++ (toString sectionId)))
 
-    ShowItem itemName ->
-      (model, Navigation.modifyUrl ("#item/" ++ (toString itemName)))
+    ShowItem itemId ->
+      (model, Navigation.modifyUrl ("#item/" ++ (toString itemId)))
 
-    HighlightTag tag ->
-      let
-        oldUiState = model.uiState
-        newUiState = { oldUiState | highlightedTag = Just tag }
-      in
-        ({ model | uiState = newUiState }, Cmd.none)
-
-    UnhighlightTag ->
-      let
-        oldUiState = model.uiState
-        newUiState = { oldUiState | highlightedTag = Nothing }
-      in
-        ({ model | uiState = newUiState }, Cmd.none)
-
-    ToggleTagFilter tag ->
-      let
-        toggleTag tag list =
-          if List.member tag list then
-            List.filter (\t -> t /= tag) list
-          else
-            tag :: list
-
-        oldUiState = model.uiState
-        newUiState = { oldUiState | tagFilter = toggleTag tag oldUiState.tagFilter }
-      in
-        ({ model | uiState = newUiState }, Cmd.none)
+    SectionPage msg ->
+      case SectionPage.Update.update msg model.sectionPage of
+        (updatedSectionPage, cmd) ->
+          ({ model | sectionPage = updatedSectionPage }, Cmd.map SectionPage cmd)

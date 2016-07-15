@@ -2,7 +2,7 @@ module CatalogParser exposing (parseCatalog)
 
 import Json.Decode as Json exposing (..)
 
-import Models exposing (..)
+import CatalogModels exposing (..)
 
 decodeItem : Json.Decoder CatalogItem
 decodeItem =
@@ -12,6 +12,6 @@ decodeSection : Json.Decoder CatalogSection
 decodeSection =
   Json.object4 CatalogSection ("id" := int) ("name" := string) ("items" := list decodeItem) (maybe ("coverImage" := (dict string)))
 
-parseCatalog : Json.Decoder CatalogData
+parseCatalog : Json.Decoder Catalog
 parseCatalog =
-  Json.object3 CatalogData ("name" := string) ("thumbnailSizes" := list string) ("sections" := list decodeSection)
+  Json.object3 Catalog ("name" := string) ("thumbnailSizes" := list string) ("sections" := list decodeSection)

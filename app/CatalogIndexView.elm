@@ -5,8 +5,9 @@ import Html exposing (Html, div, span, input, text, img)
 import Html.Attributes exposing (src, class)
 import Html.Events exposing (onClick)
 
-import Models exposing (..)
+-- import Models exposing (..)
 import Actions exposing (..)
+import CatalogModels exposing (..)
 
 coverImage : { a | coverImage : CoverImage } -> String -> String -> Html Msg
 coverImage element thumbnailSize defaultImage =
@@ -42,7 +43,7 @@ catalogSectionView section =
         ]
     ]
 
-view : CatalogData -> Html Msg
+view : Catalog -> Html Msg
 view catalog =
   div []
     (List.map

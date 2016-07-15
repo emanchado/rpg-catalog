@@ -1,6 +1,5 @@
 module ItemDetailView exposing (view)
 
--- import Dict
 import Html exposing (Html, h1, h2, nav, aside, div, span, ul, li, a, input, text, img)
 import Html.Attributes exposing (class, src, href)
 import Html.Events exposing (onClick)
@@ -10,6 +9,7 @@ import Models exposing (..)
 import Actions exposing (..)
 import ViewUtils exposing (..)
 import ModelUtils
+import CatalogModels exposing (..)
 
 tagView : String -> Html Msg
 tagView tag =
@@ -17,7 +17,7 @@ tagView tag =
     [ a [ class "tag" ] [ text tag ]
     ]
 
-itemView : CatalogData -> CatalogItem -> Html Msg
+itemView : Catalog -> CatalogItem -> Html Msg
 itemView catalog item =
   div [ class "item-card" ]
     [ aside [ class "tag-sidebar" ]
@@ -36,12 +36,12 @@ itemView catalog item =
       [ h2 [] [ text "Related items" ]
       , ul [ class "item-list" ]
           (List.map
-             (ViewUtils.smallItemView "")
+             (ViewUtils.smallItemView "" (\id -> ShowItem id))
              (ModelUtils.relatedItems catalog item))
       ]
     ]
 
-view : CatalogData -> Int -> Html Msg
+view : Catalog -> Int -> Html Msg
 view catalog itemId =
   case ModelUtils.getSectionItem catalog itemId of
     Just (section, item) ->
