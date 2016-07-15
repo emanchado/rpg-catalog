@@ -4,6 +4,7 @@ module ItemDetailView exposing (view)
 import Html exposing (Html, h1, h2, nav, aside, div, span, ul, li, a, input, text, img)
 import Html.Attributes exposing (class, src, href)
 import Html.Events exposing (onClick)
+import Markdown
 
 import Models exposing (..)
 import Actions exposing (..)
@@ -29,7 +30,7 @@ itemView catalog item =
           [ coverImage item "300x300" "/images/default-item.png"
           ]
       , h1 [] [ text item.name ]
-      , div [] [ text item.description ]
+      , Markdown.toHtml [] item.description
       ]
     , div [ class "related-items" ]
       [ h2 [] [ text "Related items" ]
