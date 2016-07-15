@@ -5,8 +5,8 @@ import Html exposing (Html, div, span, input, text, img)
 import Html.Attributes exposing (src, class)
 import Html.Events exposing (onClick)
 
--- import Models exposing (..)
-import Actions exposing (..)
+import Messages exposing (..)
+import Update exposing (..)
 import CatalogModels exposing (..)
 
 coverImage : { a | coverImage : CoverImage } -> String -> String -> Html Msg

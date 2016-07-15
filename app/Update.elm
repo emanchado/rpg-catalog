@@ -1,22 +1,12 @@
-module Actions exposing (..)
+module Update exposing (..)
 
-import Http
 import Navigation
 
 import Routing
 import Models exposing (..)
-import CatalogModels exposing (Catalog)
+import Messages exposing (..)
 import SectionPage.Model
 import SectionPage.Update
-import SectionPage.Messages
-
-type Msg
-  = CatalogFetchError Http.Error
-  | CatalogFetchSucceeded Catalog
-  | ShowCatalog
-  | ShowSection Int
-  | ShowItem Int
-  | SectionPage SectionPage.Messages.Msg
 
 urlUpdate : Result String Routing.Route -> Model -> (Model, Cmd Msg)
 urlUpdate result model =

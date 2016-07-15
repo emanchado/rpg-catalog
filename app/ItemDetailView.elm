@@ -6,7 +6,8 @@ import Html.Events exposing (onClick)
 import Markdown
 
 import Models exposing (..)
-import Actions exposing (..)
+import Update exposing (..)
+import Messages exposing (..)
 import ViewUtils exposing (..)
 import ModelUtils
 import CatalogModels exposing (..)

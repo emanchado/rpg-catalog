@@ -3,10 +3,10 @@ import Task
 import Navigation
 
 import Routing
-import Actions exposing (..)
+import Messages exposing (..)
+import Update
 import Models exposing (..)
 import Views
--- import CatalogIndexViews as Views
 import CatalogParser exposing (parseCatalog)
 import SectionPage.Model
 
@@ -15,8 +15,8 @@ main =
   Navigation.program Routing.parser
     { init = init
     , view = Views.mainApplicationView
-    , update = Actions.update
-    , urlUpdate = Actions.urlUpdate
+    , update = Update.update
+    , urlUpdate = Update.urlUpdate
     , subscriptions = subscriptions
     }
 
