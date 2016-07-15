@@ -8,7 +8,6 @@ import Html.Events exposing (onClick)
 import Routing
 import Models exposing (Model)
 import Messages exposing (..)
-import Update exposing (..)
 import CatalogIndexView
 import SectionPage.Views
 import ItemDetailView

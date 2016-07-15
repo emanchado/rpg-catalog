@@ -5,10 +5,9 @@ import Html.Attributes exposing (src, class)
 import Html.Events exposing (onClick)
 import Dict
 
-import Update exposing (..)
 import CatalogModels exposing (..)
 
--- coverImage : { a | coverImage : CoverImage } -> String -> String -> Html a
+coverImage : { a | coverImage : CoverImage } -> String -> String -> Html msg
 coverImage element thumbnailSize defaultImage =
   let imageUrl
         = case element.coverImage of
@@ -23,15 +22,22 @@ coverImage element thumbnailSize defaultImage =
   in
     img [ src imageUrl ] []
 
--- errorView : String -> Html a
+errorView : String -> Html msg
 errorView errorMessage =
   div [ class "error-message" ]
     [ text errorMessage ]
 
--- smallItemView : String -> CatalogItem -> (CatalogItemId -> a) -> Html a
-smallItemView extraClasses actionFunction item =
+smallItemView : String -> (CatalogItemId -> a) -> List (Html.Attribute a) -> CatalogItem -> Html a
+smallItemView extraClasses actionFunction extraAttributes item =
+  let
+    itemContainerAttributes =
+      List.concat
+        [ [ class "item-container", onClick (actionFunction item.id) ]
+        , extraAttributes
+        ]
+  in
     li [ class extraClasses ]
-      [ div [ class "item-container", onClick (actionFunction item.id) ]
+      [ div itemContainerAttributes
           [ coverImage item "128x128" "/images/default-item.png"
           , text item.name
           , div [ class "item-description" ] [ text item.description ]

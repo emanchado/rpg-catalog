@@ -18,7 +18,11 @@ tagView sectionPage tag =
       if List.member tag sectionPage.tagFilter then
         " highlighted"
       else
-        ""
+        case sectionPage.highlightedItem of
+          Just item ->
+            if List.member tag item.tags then " highlighted" else ""
+          Nothing ->
+            ""
   in
     a [ class ("tag" ++ extraClass)
       -- , href ("#/section/" ++ "3" ++ "/tags/" ++ tag)
@@ -55,6 +59,9 @@ itemView sectionPage item =
     ViewUtils.smallItemView
       (String.join " " [filterClass, highlightClass])
       (\id -> ShowItem id)
+      [ onMouseEnter (HighlightItemTags item)
+      , onMouseLeave UnhighlightItemTags
+      ]
       item
 
 sectionView : SectionPage -> CatalogSection -> Html Msg

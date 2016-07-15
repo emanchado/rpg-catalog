@@ -1,9 +1,8 @@
 module NavigationUtils exposing (..)
 
 import Navigation
+import CatalogModels exposing (CatalogItemId)
 
-import CatalogModels exposing (CatalogSectionId, CatalogItemId)
-
--- showItemCmd : CatalogItemId -> Cmd Msg
+showItemCmd : CatalogItemId -> Cmd a
 showItemCmd itemId =
   Navigation.modifyUrl ("#item/" ++ (toString itemId))

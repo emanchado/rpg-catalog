@@ -21,7 +21,7 @@ don't expect I'll be constantly improving or expanding this.
 TODO
 ====
 
-* Highlight tags when hovering the items in the section index page?
+* Improve tag highlighting style in section index page
 * Add tag cloud or similar to each section highlights, and/or for
   the whole catalog
 * Add search box to search for stuff

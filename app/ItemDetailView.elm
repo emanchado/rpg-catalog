@@ -5,9 +5,7 @@ import Html.Attributes exposing (class, src, href)
 import Html.Events exposing (onClick)
 import Markdown
 
-import Models exposing (..)
-import Update exposing (..)
-import Messages exposing (..)
+import Messages exposing (Msg(..))
 import ViewUtils exposing (..)
 import ModelUtils
 import CatalogModels exposing (..)
@@ -37,7 +35,7 @@ itemView catalog item =
       [ h2 [] [ text "Related items" ]
       , ul [ class "item-list" ]
           (List.map
-             (ViewUtils.smallItemView "" (\id -> ShowItem id))
+             (ViewUtils.smallItemView "" (\id -> ShowItem id) [])
              (ModelUtils.relatedItems catalog item))
       ]
     ]

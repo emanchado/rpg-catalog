@@ -2,7 +2,6 @@ module SectionPage.Update exposing (..)
 
 import SectionPage.Messages exposing (Msg(..))
 import SectionPage.Model exposing (SectionPage)
-import CatalogModels exposing (CatalogItemId)
 import NavigationUtils exposing (showItemCmd)
 
 update : Msg -> SectionPage -> (SectionPage, Cmd Msg)
@@ -23,6 +22,12 @@ update msg model =
             tag :: list
       in
         ({ model | tagFilter = toggleTag tag model.tagFilter }, Cmd.none)
+
+    HighlightItemTags item ->
+      ({ model | highlightedItem = Just item }, Cmd.none)
+
+    UnhighlightItemTags ->
+      ({ model | highlightedItem = Nothing }, Cmd.none)
 
     ShowItem itemId ->
       (model, showItemCmd itemId)
