@@ -169,14 +169,18 @@ ul.item-list > li.filtered-out {
     padding: 0;
 }
 .tag-sidebar .tag {
-    display: block;
+    display: inline;
 
     font-size: 12px;
     text-decoration: none;
 }
-.tag-sidebar .tag.highlighted {
+.tag-sidebar .tag.tag-filter {
     color: white;
     background-color: #0000ee;
+}
+.tag-sidebar .tag.highlighted {
+    color: white;
+    background-color: #000055;
 }
 
 .item-card {

@@ -16,7 +16,7 @@ tagView sectionPage tag =
   let
     extraClass =
       if List.member tag sectionPage.tagFilter then
-        " highlighted"
+        " tag-filter"
       else
         case sectionPage.highlightedItem of
           Just item ->
@@ -24,20 +24,22 @@ tagView sectionPage tag =
           Nothing ->
             ""
   in
-    a [ class ("tag" ++ extraClass)
-      -- , href ("#/section/" ++ "3" ++ "/tags/" ++ tag)
-      , onMouseEnter (HighlightTag tag)
-      , onMouseLeave UnhighlightTag
-      , onClick (ToggleTagFilter tag)
-      ]
-      [ text tag ]
+    li [] [ a [ class ("tag" ++ extraClass)
+              , onMouseEnter (HighlightTag tag)
+              , onMouseLeave UnhighlightTag
+              , onClick (ToggleTagFilter tag)
+              ]
+              [ text tag ]
+          ]
 
 tagListView : SectionPage -> CatalogSection -> Html Msg
 tagListView sectionPage section =
   aside [ class "tag-sidebar" ]
-    ((h2 [] [ text "Tags" ]) ::
+    [ h2 [] [ text "Tags" ]
+    , ul []
        (List.map (tagView sectionPage)
-          (ModelUtils.getSectionTags section)))
+          (ModelUtils.getSectionTags section))
+    ]
 
 itemView : SectionPage -> CatalogItem -> Html Msg
 itemView sectionPage item =
