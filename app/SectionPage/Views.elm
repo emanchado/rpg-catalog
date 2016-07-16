@@ -14,17 +14,22 @@ import SectionPage.Model exposing (SectionPage)
 tagView : SectionPage -> String -> Html Msg
 tagView sectionPage tag =
   let
-    extraClass =
+    tagFilterClass =
       if List.member tag sectionPage.tagFilter then
         " tag-filter"
       else
+        ""
+
+    highlightClass =
         case sectionPage.highlightedItem of
           Just item ->
             if List.member tag item.tags then " highlighted" else ""
           Nothing ->
             ""
+
+    extraClasses = tagFilterClass ++ highlightClass
   in
-    li [] [ a [ class ("tag" ++ extraClass)
+    li [] [ a [ class ("tag" ++ extraClasses)
               , onMouseEnter (HighlightTag tag)
               , onMouseLeave UnhighlightTag
               , onClick (ToggleTagFilter tag)

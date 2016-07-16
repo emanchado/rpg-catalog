@@ -21,7 +21,6 @@ don't expect I'll be constantly improving or expanding this.
 TODO
 ====
 
-* Improve tag highlighting style in section index page
 * Add tag cloud or similar to each section highlights, and/or for
   the whole catalog
 * Add search box to search for stuff
@@ -29,3 +28,12 @@ TODO
   tagged with that
 * Investigate the HTML5 history stuff, because pressing Back goes to a
   seemingly random place :-?
+
+Credits
+=======
+
+* Pin icon by
+  [Madebyoliver](http://www.flaticon.com/authors/madebyoliver) from
+  [Flaticon](http://www.flaticon.com), licensed by
+  [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/)
+* Pretty much the rest by Esteban Manchado Velázquez

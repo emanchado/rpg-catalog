@@ -168,19 +168,30 @@ ul.item-list > li.filtered-out {
     list-style: none;
     padding: 0;
 }
+.tag-sidebar ul li {
+    display: block;
+    line-height: 14px;
+}
 .tag-sidebar .tag {
     display: inline;
 
+    margin-left: -12px;
+    border-left: 12px solid transparent;
+    padding-left: 2px;
+
+    color: #888;
     font-size: 12px;
     text-decoration: none;
 }
 .tag-sidebar .tag.tag-filter {
-    color: white;
-    background-color: #0000ee;
+    padding-right: 18px;
+
+    color: #0000ee;
+    background: url(/images/pin.png) no-repeat right;
 }
 .tag-sidebar .tag.highlighted {
-    color: white;
-    background-color: #000055;
+    border-left: 12px solid #0000ee;
+    color: #0000ee;
 }
 
 .item-card {
@@ -189,7 +200,7 @@ ul.item-list > li.filtered-out {
 .item-main-image {
     float: right;
 
-    margin: 0 20px;
+    margin: 0 20px 15px 15px;
     border: 1px solid #ddd;
 }
 .item-main-image img {
