@@ -137,14 +137,14 @@ ul.item-list > li.filtered-out {
     margin-right: 5px;
 }
 
-.item-name {
+.item-list .item-name {
     max-width: 125px;
 
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-.item-description {
+.item-list .item-description {
     position: relative;
     width: 128px;
     height: 45px;
@@ -154,7 +154,7 @@ ul.item-list > li.filtered-out {
     font-size: 10px;
     color: #555;
 }
-.item-description:after {
+.item-list .item-description:after {
     content: "";
     text-align: right;
     position: absolute;
@@ -227,6 +227,11 @@ ul.item-list > li.filtered-out {
     width: 300px;
     height: 300px;
 }
+
 .item-main-content {
     min-height: 310px;
+    max-width: 85%;
+}
+.item-main-content .item-description {
+    padding-right: 35px;
 }

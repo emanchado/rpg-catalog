@@ -37,7 +37,7 @@ itemView catalog item =
           [ coverImage item "300x300" "/images/default-item.png"
           ]
       , h1 [] [ text item.name ]
-      , Markdown.toHtml [] item.description
+      , Markdown.toHtml [ class "item-description" ] item.description
       , displayUrl item.url
       ]
     , div [ class "related-items" ]
