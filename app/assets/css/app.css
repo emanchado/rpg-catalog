@@ -96,6 +96,10 @@ ul.item-list > li {
 }
 ul.item-list > li.highlighted {
     border-color: #0000ee;
+    background-color: #ddddff;
+}
+ul.item-list > li.highlighted .item-description:after {
+    background: linear-gradient(to right, rgba(221, 221, 255, 0), rgba(221, 221, 255, 1) 50%);
 }
 ul.item-list > li.filtered-out {
     display: none;
