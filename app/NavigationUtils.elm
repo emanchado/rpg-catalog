@@ -5,4 +5,4 @@ import CatalogModels exposing (CatalogItemId)
 
 showItemCmd : CatalogItemId -> Cmd a
 showItemCmd itemId =
-  Navigation.modifyUrl ("#item/" ++ (toString itemId))
+  Navigation.newUrl ("#item/" ++ (toString itemId))

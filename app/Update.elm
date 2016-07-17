@@ -26,14 +26,14 @@ update msg model =
       ({ model | catalog = Just catalogData }, Cmd.none)
 
     ShowCatalog ->
-      (model, Navigation.modifyUrl "#/")
+      (model, Navigation.newUrl "#/")
 
     ShowSection sectionId ->
       ({ model | sectionPage = SectionPage.Model.init model.catalog}
-       , Navigation.modifyUrl ("#section/" ++ (toString sectionId)))
+       , Navigation.newUrl ("#section/" ++ (toString sectionId)))
 
     ShowItem itemId ->
-      (model, Navigation.modifyUrl ("#item/" ++ (toString itemId)))
+      (model, Navigation.newUrl ("#item/" ++ (toString itemId)))
 
     SectionPage msg ->
       case SectionPage.Update.update msg model.sectionPage of

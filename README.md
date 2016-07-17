@@ -26,8 +26,6 @@ TODO
 * Add search box to search for stuff
 * Make tags clickable and show items, regardless of section, that are
   tagged with that
-* Investigate the HTML5 history stuff, because pressing Back goes to a
-  seemingly random place :-?
 
 Credits
 =======
