@@ -16,6 +16,14 @@ tagView tag =
     [ a [ class "tag" ] [ text tag ]
     ]
 
+displayUrl : Maybe String -> Html Msg
+displayUrl possibleUrl =
+  case possibleUrl of
+    Just url ->
+      a [ class "item-url", href url ] [ text url ]
+    Nothing ->
+      text ""
+
 itemView : Catalog -> CatalogItem -> Html Msg
 itemView catalog item =
   div [ class "item-card" ]
@@ -30,6 +38,7 @@ itemView catalog item =
           ]
       , h1 [] [ text item.name ]
       , Markdown.toHtml [] item.description
+      , displayUrl item.url
       ]
     , div [ class "related-items" ]
       [ h2 [] [ text "Related items" ]

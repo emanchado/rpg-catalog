@@ -158,6 +158,11 @@ ul.item-list > li.filtered-out {
     background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
 }
 
+.item-url {
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .tag-sidebar {
     float: right;
 
