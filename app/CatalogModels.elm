@@ -19,6 +19,7 @@ type alias CatalogItem =
 type alias CatalogSection =
   { id : CatalogSectionId
   , name : String
+  , description : String
   , items : List CatalogItem
   , coverImage : CoverImage
   }

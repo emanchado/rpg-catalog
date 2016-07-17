@@ -4,6 +4,7 @@ import Html exposing (Html, nav, h2, div, span, aside, ul, li, a, input, text, i
 import Html.Attributes exposing (src, href, class)
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
 import String
+import Markdown
 
 import ModelUtils
 import SectionPage.Messages exposing (Msg(..))
@@ -79,6 +80,7 @@ sectionView sectionPage section =
         , text " ⇢ "
         , text section.name
         ]
+    , Markdown.toHtml [ class "section-description" ] section.description
     , tagListView sectionPage section
     , ul [ class "item-list" ]
         (List.map (itemView sectionPage) section.items)

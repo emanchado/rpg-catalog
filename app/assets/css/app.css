@@ -49,6 +49,10 @@ nav {
     cursor: pointer;
 }
 
+.section-description {
+    max-width: 45em;
+}
+
 .highlighted-items {
     display: flex;
     flex-direction: column;

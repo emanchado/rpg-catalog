@@ -10,7 +10,7 @@ decodeItem =
 
 decodeSection : Json.Decoder CatalogSection
 decodeSection =
-  Json.object4 CatalogSection ("id" := int) ("name" := string) ("items" := list decodeItem) (maybe ("coverImage" := (dict string)))
+  Json.object5 CatalogSection ("id" := int) ("name" := string) ("description" := string) ("items" := list decodeItem) (maybe ("coverImage" := (dict string)))
 
 parseCatalog : Json.Decoder Catalog
 parseCatalog =
