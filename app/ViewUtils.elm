@@ -1,7 +1,7 @@
 module ViewUtils exposing (..)
 
 import Html exposing (Html, div, span, li, input, text, img)
-import Html.Attributes exposing (src, class)
+import Html.Attributes exposing (src, class, title)
 import Html.Events exposing (onClick)
 import Dict
 
@@ -39,7 +39,7 @@ smallItemView extraClasses actionFunction extraAttributes item =
     li [ class extraClasses ]
       [ div itemContainerAttributes
           [ coverImage item "128x128" "/images/default-item.png"
-          , text item.name
+          , div [ class "item-name", title item.name ] [ text item.name ]
           , div [ class "item-description" ] [ text item.description ]
           ]
       ]

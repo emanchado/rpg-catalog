@@ -115,14 +115,14 @@ ul.item-list > li.filtered-out {
     align-items: center;
 
     padding: 10px;
+
+    cursor: pointer;
 }
 .item-container img {
     width: 128px;
     height: 128px;
 
     margin-bottom: 10px;
-
-    cursor: pointer;
 }
 .item-container ul.tags {
     font-size: 10px;
@@ -137,6 +137,13 @@ ul.item-list > li.filtered-out {
     margin-right: 5px;
 }
 
+.item-name {
+    max-width: 125px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .item-description {
     position: relative;
     width: 128px;
