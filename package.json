@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "dev": "webpack-dev-server --port 3000"
+    "build": "brunch build",
+    "watch": "brunch watch",
+    "dev": "brunch watch --server"
   },
   "devDependencies": {
     "brunch": "^2.8.2",
