@@ -30,7 +30,7 @@ init result =
 
 getCatalog : String -> Cmd Msg
 getCatalog catalogUrl =
-  Task.perform CatalogFetchError CatalogFetchSucceeded (Http.get parseCatalog (catalogUrl))
+  Task.perform CatalogFetchError CatalogFetchSucceeded (Http.get parseCatalog catalogUrl)
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
