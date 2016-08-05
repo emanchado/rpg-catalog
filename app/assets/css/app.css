@@ -15,6 +15,7 @@ nav {
 .section-preview-container {
     border: 1px solid #ddd;
     margin-bottom: 10px;
+    overflow: hidden;
 }
 
 .section-preview {
