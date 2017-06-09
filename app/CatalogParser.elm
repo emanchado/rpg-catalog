@@ -1,17 +1,36 @@
 module CatalogParser exposing (parseCatalog)
 
 import Json.Decode as Json exposing (..)
-
 import CatalogModels exposing (..)
+
 
 decodeItem : Json.Decoder CatalogItem
 decodeItem =
-  Json.object6 CatalogItem ("id" := int) ("name" := string) ("description" := string) ("tags" := list string) (maybe ("url" := string)) (maybe ("coverImage" := (dict string)))
+    Json.map6
+      CatalogItem
+      (field "id" int)
+      (field "name" string)
+      (field "description" string)
+      (field "tags" <| list string)
+      (maybe (field "url" string))
+      (maybe (field "coverImage" (dict string)))
+
 
 decodeSection : Json.Decoder CatalogSection
 decodeSection =
-  Json.object5 CatalogSection ("id" := int) ("name" := string) ("description" := string) ("items" := list decodeItem) (maybe ("coverImage" := (dict string)))
+    Json.map5
+      CatalogSection
+      (field "id" int)
+      (field "name" string)
+      (field "description" string)
+      (field "items" <| list decodeItem)
+      (maybe (field "coverImage" <| dict string))
+
 
 parseCatalog : Json.Decoder Catalog
 parseCatalog =
-  Json.object3 Catalog ("name" := string) ("thumbnailSizes" := list string) ("sections" := list decodeSection)
+    Json.map3
+      Catalog
+      (field "name" string)
+      (field "thumbnailSizes" <| list string)
+      (field "sections" <| list decodeSection)

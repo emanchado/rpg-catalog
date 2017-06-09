@@ -4,11 +4,11 @@ import Html exposing (Html, h1, h2, nav, aside, div, span, ul, li, a, input, tex
 import Html.Attributes exposing (class, src, href)
 import Html.Events exposing (onClick)
 import Markdown
-
 import Messages exposing (Msg(..))
 import ViewUtils exposing (..)
 import ModelUtils
 import CatalogModels exposing (..)
+
 
 tagView : String -> Html Msg
 tagView tag =

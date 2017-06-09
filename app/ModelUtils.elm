@@ -1,8 +1,8 @@
 module ModelUtils exposing (..)
 
 import Set
-
 import CatalogModels exposing (Catalog, CatalogSection, CatalogItem)
+
 
 getSection : Catalog -> Int -> Maybe CatalogSection
 getSection catalog sectionId =
@@ -62,9 +62,9 @@ relatedItems catalog item =
 
     relatedItems =
       List.filter
-        (\i -> (snd i) > 0)
+        (\i -> (Tuple.second i) > 0)
         scoredItems
   in
     List.map
-      fst
-      (List.sortBy (\i -> (snd i) * -1) relatedItems)
+      Tuple.first
+      (List.sortBy (\i -> (Tuple.second i) * -1) relatedItems)

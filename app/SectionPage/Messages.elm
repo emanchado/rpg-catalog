@@ -2,6 +2,7 @@ module SectionPage.Messages exposing (..)
 
 import CatalogModels exposing (CatalogItem)
 
+
 type Msg
   = HighlightTag String
   | UnhighlightTag
