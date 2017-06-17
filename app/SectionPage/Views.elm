@@ -5,10 +5,11 @@ import Html.Attributes exposing (src, href, class)
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
 import String
 import Markdown
+
 import ModelUtils
-import SectionPage.Messages exposing (Msg(..))
 import ViewUtils
 import CatalogModels exposing (..)
+import SectionPage.Messages exposing (Msg(..))
 import SectionPage.Model exposing (SectionPage)
 
 

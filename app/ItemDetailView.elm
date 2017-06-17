@@ -13,7 +13,11 @@ import CatalogModels exposing (..)
 tagView : String -> Html Msg
 tagView tag =
   li []
-    [ a [ class "tag" ] [ text tag ]
+    [ a [ class "tag"
+        , href "#/search"
+        , onClick (PerformSearch tag)
+        ]
+        [ text tag ]
     ]
 
 displayUrl : Maybe String -> Html Msg

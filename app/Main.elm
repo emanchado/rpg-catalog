@@ -9,6 +9,7 @@ import Models exposing (..)
 import Views
 import CatalogParser exposing (parseCatalog)
 import SectionPage.Model
+import Ports exposing (indexCatalogSuccess)
 
 
 main : Program Never Model Msg
@@ -30,6 +31,8 @@ init location =
       , catalogUrl = catalogJsonUrl
       , catalog = Nothing
       , sectionPage = SectionPage.Model.init Nothing
+      , searchTerms = ""
+      , searchIndex = Nothing
       }
     , getCatalog catalogJsonUrl
     )
@@ -43,4 +46,4 @@ getCatalog catalogUrl =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.none
+  indexCatalogSuccess IndexCatalogSuccess

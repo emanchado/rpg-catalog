@@ -8,6 +8,7 @@ type Route
   = CatalogIndex
   | SectionIndex Int
   | ItemDetail Int
+  | SearchResults
   | NotFoundRoute
 
 
@@ -17,6 +18,7 @@ matchers =
     [ map CatalogIndex (s "")
     , map SectionIndex (s "section" </> int)
     , map ItemDetail (s "item" </> int)
+    , map SearchResults (s "search")
     ]
 
 

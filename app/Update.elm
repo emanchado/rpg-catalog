@@ -1,11 +1,15 @@
 module Update exposing (..)
 
+import Json.Decode
 import Navigation
+
 import Routing
 import Models exposing (..)
+import CatalogModels exposing (serializableCatalog)
 import Messages exposing (..)
 import SectionPage.Model
 import SectionPage.Update
+import Ports exposing (indexCatalog, parseSearchIndex)
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -18,7 +22,24 @@ update msg model =
       ( model, Cmd.none )
 
     CatalogFetch (Ok catalogData) ->
-      ( { model | catalog = Just catalogData }, Cmd.none )
+      ( { model | catalog = Just catalogData }
+      , indexCatalog <| serializableCatalog catalogData
+      )
+
+    UpdateSearchTerms newSearchTerms ->
+      ( { model | searchTerms = newSearchTerms }
+      , Cmd.none
+      )
+
+    GoToSearch ->
+      ( model
+      , Navigation.newUrl <| "#/search"
+      )
+
+    PerformSearch searchTerms ->
+      ( { model | searchTerms = searchTerms }
+      , Navigation.newUrl <| "#/search"
+      )
 
     ShowCatalog ->
       ( model, Navigation.newUrl "#/" )
@@ -37,3 +58,19 @@ update msg model =
           ( { model | sectionPage = updatedSectionPage }
           , Cmd.map SectionPage cmd
           )
+
+    IndexCatalogSuccess rawIndex ->
+      case model.catalog of
+        Just catalog ->
+          let
+            parseResult = Json.Decode.decodeValue (parseSearchIndex catalog) rawIndex
+          in
+            case parseResult of
+              Ok newSearchIndex ->
+                ( { model | searchIndex = Just newSearchIndex }
+                , Cmd.none
+                )
+              _ ->
+                ( model, Cmd.none )
+        Nothing ->
+          ( model, Cmd.none )
