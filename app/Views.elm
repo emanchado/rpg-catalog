@@ -1,6 +1,6 @@
 module Views exposing (mainApplicationView)
 
-import Html exposing (Html, div, span, a, input, text, img)
+import Html exposing (Html, header, div, span, a, input, text, img)
 import Html.Attributes exposing (class, src, href)
 import Html.Events exposing (onClick)
 import Routing
@@ -28,18 +28,24 @@ mainApplicationView : Model -> Html Msg
 mainApplicationView model =
   case model.catalog of
     Just data ->
-      case model.route of
-        Routing.CatalogIndex ->
-          CatalogIndexView.view data
+      div []
+        [ header []
+            [ div [ class "site-title" ]
+                [ text data.name ]
+            ]
+        , case model.route of
+            Routing.CatalogIndex ->
+              CatalogIndexView.view data
 
-        Routing.SectionIndex sectionId ->
-          Html.map SectionPage (SectionPage.Views.view data model.sectionPage sectionId)
+            Routing.SectionIndex sectionId ->
+              Html.map SectionPage (SectionPage.Views.view data model.sectionPage sectionId)
 
-        Routing.ItemDetail itemId ->
-          ItemDetailView.view data itemId
+            Routing.ItemDetail itemId ->
+              ItemDetailView.view data itemId
 
-        Routing.NotFoundRoute ->
-          notFoundView model
+            Routing.NotFoundRoute ->
+              notFoundView model
+        ]
 
     Nothing ->
       loadingView model
